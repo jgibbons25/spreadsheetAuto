@@ -1,4 +1,5 @@
 This Python script is designed to convert dialogue scripts in .txt format to a .csv compatible with the VN Framework. Dialogue files should have the following format (comments are after the # symbol):
+
 ______
 # To separate scenes into new files, put a line with at least one underscore between each scene.
 NAME: Dialogue. 
@@ -12,6 +13,7 @@ NAME: I have a choice to make!
 *ChoiceAStart
 NAME: Here's the branch for ChoiceA!
 ______
+
 HOW TO RUN THE SCRIPT:
 1) Save your full dialogue file as a .txt
 2) Put ScriptConvert.py file in the same folder as the .txt file containing your dialogue script.
