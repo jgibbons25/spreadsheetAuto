@@ -2,8 +2,7 @@ import re #regular expressions
 import os #to handle file paths for different operating systems
 import fileinput
 
-#os.chdir('C:\\Users\\story_000\\Development\\PythonTools')
-os.chdir('C:\\Users\\story_000\\Dropbox\\John_and_Jenny\\CrimsonSpires\\Scenes\\JulianPath')
+os.chdir('./') #change functioning directory to the folder of this file
 
 def formatName(name):
     name = str(name)
@@ -27,11 +26,19 @@ def makeNewFile():
     sceneNum += 1
 
 
+fileFound = False
 
-print("What is the file name (no extension needed)?")
-fileNameInput = input()
-fileName = fileNameInput + ".txt"
+while not fileFound:
+    print("What is the file name (no file extension needed)?")
+    fileNameInput = input()
+    fileName = fileNameInput + ".txt"
+    fileFound = os.path.isfile(fileName)
+    if not fileFound:
+        print("ERROR: Cannot find a .txt file in this folder with that name. Please try again."
+              "\n***"
+              )
 
+    
 print("What's the first scene number?")
 sceneNum = int(input())
 
@@ -79,4 +86,5 @@ for line in fullScript:
 
 
 newFile.close()
+print("Script conversions complete!")
 
