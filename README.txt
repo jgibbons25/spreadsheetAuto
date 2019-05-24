@@ -12,6 +12,8 @@ NAME: I have a choice to make!
 *ChoiceB: No
 *ChoiceAStart
 NAME: Here's the branch for ChoiceA!
+
+#IMPORTANT NOTE: any double-quotes in your text (") will be stripped out of the file. Otherwise, they cause errors
 ______
 
 HOW TO RUN THE SCRIPT:
