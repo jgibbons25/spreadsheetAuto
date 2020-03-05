@@ -11,6 +11,12 @@ def formatName(name):
         name = name
     return name
 
+def bashPause():
+    try:
+        programPause = raw_input("Press the <ENTER> key to continue...")
+    except:
+        programPause = input("Press the <ENTER> key to continue...")
+
 def makeNewFile():
     global fileNameInput, newFile, sceneNum, rowName
     print('Starting file with scene number ' + str(sceneNum))
@@ -18,10 +24,14 @@ def makeNewFile():
         newFile.close()
     except:
         pass
-    newFileName = 'Scene' + str(sceneNum) + '_' + fileNameInput + '.csv'
+    
+    if len(fileNameInput) > 4 and fileNameInput[0:5] == "Scene":
+        newFileName = fileNameInput + '.csv'
+    else:
+        newFileName = 'Scene' + str(sceneNum) + '_' + fileNameInput + '.csv'
     newFile = open(newFileName, 'w')
     #first line of the file should contain column names
-    newFile.write(',Speaker,Expression,Sound,Text,SpecialEvent,SpecialEffect,CharHorizontal,CharScale\n')
+    newFile.write(',Speaker,Expression,Sound,Text,SpecialEvent,SpecialEffect,CharX,CharY,CharScale\n')
     rowName = 1
     sceneNum += 1
 
@@ -30,7 +40,10 @@ fileFound = False
 
 while not fileFound:
     print("What is the file name (no file extension needed)?")
-    fileNameInput = input()
+    try:
+        fileNameInput = input()
+    except:
+        fileNameInput = raw_input()
     fileName = fileNameInput + ".txt"
     fileFound = os.path.isfile(fileName)
     if not fileFound:
@@ -38,24 +51,32 @@ while not fileFound:
               "\n***"
               )
 
-    
+
 print("What's the first scene number?")
-sceneNum = int(input())
+try:
+   sceneNum = int(input())
+except ValueError:
+    print("That wasn't a valid number. Defaulting to scene number 0.")
+    sceneNum = 0
 
 scriptFile = open(fileName) #w opens in write mode
 fullScript = scriptFile.readlines()
 scriptFile.close()
 
-
-
-rowName = 1
 makeNewFile()
+
+print("Start at what row number?")
+try:
+    rowName = int(input())
+except ValueError:
+    print("That wasn't a valid number. Defaulting to row number 1.")
+    rowName = 1
 
 
 #loop through each line, alter it, and write it to new file
 for line in fullScript:
     line = line.rstrip('\n')
-    line = line.replace('"', '') #quotation marks cause error
+    line = line.replace('"', '""') #exit out of double quotes by making two
     name = dialogue = specialEvent = '' #reset vars in the loop
     if len(line) >= 1:
         if line[0] != "#":  #hashtags reserved for comments
@@ -79,7 +100,7 @@ for line in fullScript:
                     name = line
 
 
-    line = str(rowName) + ',' + name + ',Nothing,,"' + dialogue + '",' + specialEvent + ',,,\n'
+    line = str(rowName) + ',"' + name + '","Nothing","None","' + dialogue + '","' + specialEvent + '","none","0.0","0.0","0.0"\n'
     
     newFile.write(line)
     rowName += 1
@@ -87,4 +108,4 @@ for line in fullScript:
 
 newFile.close()
 print("Script conversions complete!")
-
+bashPause()
